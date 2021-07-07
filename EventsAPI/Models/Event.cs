@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace EventsAPI.Models
 {
+    /**
+     * Модель данных для мероприятия
+     */
     public class Event
     {
         public int Id { get; set; }
@@ -14,6 +17,6 @@ namespace EventsAPI.Models
         public DateTime DateEnd { get; set; }
         public DateTime TimeStart { get; set; }
         public DateTime TimeEnd { get; set; }
-        public String Author { get; set; }
+        public string Author { get; set; }
     }
 }

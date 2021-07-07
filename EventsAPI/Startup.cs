@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -12,17 +13,25 @@ using System.Threading.Tasks;
 
 namespace EventsAPI
 {
+    /**
+     *  онфигураци€
+     */
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string con = "Server=localhost;Database=db;Trusted_Connection=True;";
-            // устанавливаем контекст данных
+            string con = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EventsContext>(options => options.UseSqlServer(con));
-
-            services.AddControllers(); // используем контроллеры без представлений
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

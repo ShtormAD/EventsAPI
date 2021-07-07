@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace EventsAPI
 {
+    /**
+     * Точка входа и запуск конфигурации
+     */
     public class Program
     {
         public static void Main(string[] args)

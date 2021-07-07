@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace EventsAPI.Controllers
 {
+    /**
+     * Контроллер для работы с мероприятиями
+     */
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
@@ -18,12 +21,6 @@ namespace EventsAPI.Controllers
         public EventsController(EventsContext context)
         {
             db = context;
-            if (!db.Events.Any())
-            {
-                db.Events.Add(new Event { Name = "Event1", Description = "Description1", Author = "ShtormAD" });
-                db.Events.Add(new Event { Name = "Event2", Description = "Description2", Author = "не ShtormAD" });
-                db.SaveChanges();
-            }
         }
 
         [HttpGet]
@@ -32,6 +29,20 @@ namespace EventsAPI.Controllers
             return await db.Events.ToListAsync();
         }
 
-        //[HttpGet("{id}")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Event>> GetItem(long id)
+        {
+            var ev = await db.Events.FindAsync(id);
+            if (ev == null) return NotFound();
+            return ev;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] Event ev)
+        {
+            db.Events.Add(ev);
+            await db.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetItem), new { id = ev.Id }, ev);
+        }
     }
 }
